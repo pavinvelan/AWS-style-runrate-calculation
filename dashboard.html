@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Energy Consumption Prediction Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
     <style>
         * {
             margin: 0;
@@ -12,11 +13,15 @@
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: #0a0e27;
+            background-image: 
+                radial-gradient(at 20% 30%, rgba(59, 130, 246, 0.15) 0px, transparent 50%),
+                radial-gradient(at 80% 70%, rgba(139, 92, 246, 0.15) 0px, transparent 50%),
+                radial-gradient(at 50% 50%, rgba(6, 182, 212, 0.1) 0px, transparent 50%);
             min-height: 100vh;
             padding: 20px;
-            color: #333;
+            color: #e2e8f0;
         }
 
         .container {
@@ -26,7 +31,7 @@
 
         .header {
             text-align: center;
-            color: white;
+            color: #f1f5f9;
             margin-bottom: 40px;
             animation: fadeIn 0.8s ease-in;
         }
@@ -35,24 +40,31 @@
             font-size: 2.5rem;
             margin-bottom: 10px;
             font-weight: 700;
+            background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 50%, #06b6d4 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
         .header p {
             font-size: 1.1rem;
-            opacity: 0.9;
+            opacity: 0.7;
+            color: #94a3b8;
         }
 
         .controls {
-            background: white;
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(10px);
             padding: 20px;
             border-radius: 12px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
             margin-bottom: 30px;
             animation: slideUp 0.6s ease-out;
         }
 
         .controls button {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
             color: white;
             border: none;
             padding: 12px 30px;
@@ -60,13 +72,15 @@
             font-size: 1rem;
             font-weight: 600;
             cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.2s;
+            transition: all 0.3s ease;
             width: 100%;
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
         }
 
         .controls button:hover {
             transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+            box-shadow: 0 8px 25px rgba(59, 130, 246, 0.5);
+            background: linear-gradient(135deg, #2563eb 0%, #7c3aed 100%);
         }
 
         .controls button:active {
@@ -81,16 +95,19 @@
         }
 
         .meter-card {
-            background: white;
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(10px);
             border-radius: 12px;
             padding: 25px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-            transition: transform 0.3s, box-shadow 0.3s;
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            transition: all 0.3s ease;
         }
 
         .meter-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 15px 40px rgba(0,0,0,0.25);
+            box-shadow: 0 15px 40px rgba(59, 130, 246, 0.3);
+            border-color: rgba(59, 130, 246, 0.4);
         }
 
         .meter-header {
@@ -98,25 +115,26 @@
             align-items: center;
             margin-bottom: 25px;
             padding-bottom: 15px;
-            border-bottom: 2px solid #f0f0f0;
+            border-bottom: 2px solid rgba(59, 130, 246, 0.2);
         }
 
         .meter-icon {
             width: 50px;
             height: 50px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
             border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 24px;
             margin-right: 15px;
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
         }
 
         .meter-title {
             font-size: 1.5rem;
             font-weight: 700;
-            color: #333;
+            color: #f1f5f9;
         }
 
         .prediction-section {
@@ -126,40 +144,42 @@
         .section-title {
             font-size: 0.9rem;
             font-weight: 600;
-            color: #667eea;
+            color: #3b82f6;
             text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 1.5px;
             margin-bottom: 15px;
         }
 
         .stat-box {
-            background: #f8f9fa;
+            background: rgba(30, 41, 59, 0.5);
             padding: 15px;
             border-radius: 8px;
             margin-bottom: 12px;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            border: 1px solid rgba(59, 130, 246, 0.1);
         }
 
         .stat-label {
             font-size: 0.95rem;
-            color: #666;
+            color: #94a3b8;
         }
 
         .stat-value {
             font-size: 1.1rem;
             font-weight: 700;
-            color: #333;
+            color: #f1f5f9;
         }
 
         .prediction-box {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
             color: white;
             padding: 20px;
             border-radius: 10px;
             text-align: center;
             margin-top: 15px;
+            box-shadow: 0 4px 20px rgba(59, 130, 246, 0.3);
         }
 
         .prediction-label {
@@ -175,47 +195,51 @@
 
         .status-badge {
             display: inline-block;
-            background: #10b981;
-            color: white;
+            background: rgba(16, 185, 129, 0.2);
+            color: #10b981;
             padding: 4px 12px;
             border-radius: 20px;
             font-size: 0.8rem;
             font-weight: 600;
             margin-top: 10px;
+            border: 1px solid rgba(16, 185, 129, 0.3);
         }
 
         .formula-box {
-            background: #fff9e6;
+            background: rgba(251, 191, 36, 0.1);
             border-left: 4px solid #fbbf24;
             padding: 15px;
             border-radius: 6px;
             font-family: 'Courier New', monospace;
             font-size: 0.9rem;
             margin-top: 10px;
-            color: #666;
+            color: #fbbf24;
         }
 
         .loading {
             text-align: center;
             padding: 60px;
-            color: white;
+            color: #94a3b8;
             font-size: 1.2rem;
         }
 
         .error {
-            background: #fee;
-            color: #c33;
+            background: rgba(239, 68, 68, 0.1);
+            color: #ef4444;
             padding: 20px;
             border-radius: 8px;
             margin: 20px 0;
             text-align: center;
+            border: 1px solid rgba(239, 68, 68, 0.3);
         }
 
         .info-box {
-            background: white;
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(10px);
             padding: 20px;
             border-radius: 12px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
             margin-top: 30px;
         }
 
@@ -223,7 +247,7 @@
             font-size: 1.2rem;
             font-weight: 700;
             margin-bottom: 15px;
-            color: #333;
+            color: #f1f5f9;
         }
 
         .info-list {
@@ -232,8 +256,8 @@
 
         .info-list li {
             padding: 8px 0;
-            color: #666;
-            border-bottom: 1px solid #f0f0f0;
+            color: #94a3b8;
+            border-bottom: 1px solid rgba(59, 130, 246, 0.1);
         }
 
         .info-list li:last-child {
@@ -241,10 +265,29 @@
         }
 
         .info-list li::before {
-            content: "✓ ";
-            color: #10b981;
+            content: "▸ ";
+            color: #3b82f6;
             font-weight: bold;
             margin-right: 8px;
+        }
+
+        .chart-container {
+            background: rgba(30, 41, 59, 0.5);
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 15px;
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            height: 300px;
+            position: relative;
+        }
+
+        .chart-title {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #94a3b8;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
         @keyframes fadeIn {
@@ -281,12 +324,12 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>⚡ Energy Consumption Prediction</h1>
+            <h1>Energy Consumption Prediction</h1>
             <p>AWS-Style Run-Rate Forecasting</p>
         </div>
 
         <div class="controls">
-            <button onclick="loadPredictions()">🔄 Run Prediction Analysis</button>
+            <button onclick="loadPredictions()">Run Prediction Analysis</button>
         </div>
 
         <div id="content">
@@ -296,7 +339,7 @@
         </div>
 
         <div class="info-box">
-            <div class="info-title">📊 How It Works</div>
+            <div class="info-title">How It Works</div>
             <ul class="info-list">
                 <li>Uses AWS-style run-rate formula: (energy_so_far / time_passed) × total_time</li>
                 <li>Rolling average of last 6 hours reduces spike impact</li>
@@ -310,7 +353,7 @@
     <script>
         async function loadPredictions() {
             const content = document.getElementById('content');
-            content.innerHTML = '<div class="loading">⏳ Running analysis... Please wait...</div>';
+            content.innerHTML = '<div class="loading">Running analysis... Please wait...</div>';
 
             try {
                 // Call the Node.js script via API
@@ -326,7 +369,7 @@
             } catch (error) {
                 content.innerHTML = `
                     <div class="error">
-                        ⚠️ Error: ${error.message}<br><br>
+                        Error: ${error.message}<br><br>
                         Make sure the server is running: <code>node server.js</code>
                     </div>
                 `;
@@ -347,12 +390,12 @@
                 html += `
                     <div class="meter-card">
                         <div class="meter-header">
-                            <div class="meter-icon">⚡</div>
+                            <div class="meter-icon">⚙</div>
                             <div class="meter-title">${meter.meterId}</div>
                         </div>
 
                         <div class="prediction-section">
-                            <div class="section-title">📈 Today's Prediction</div>
+                            <div class="section-title">Today's Prediction</div>
                             
                             ${meter.today.success ? `
                                 <div class="stat-box">
@@ -379,15 +422,20 @@
                                 <div class="formula-box">
                                     Formula: ${meter.today.recentHourlyRate.toFixed(2)} kWh/hr × 24 hrs
                                 </div>
+
+                                <div class="chart-container">
+                                    <div class="chart-title">Today's Energy Projection</div>
+                                    <canvas id="chart-today-${meter.meterId}"></canvas>
+                                </div>
                             ` : `
                                 <div class="stat-box">
-                                    <span class="stat-label">⚠️ ${meter.today.message}</span>
+                                    <span class="stat-label">${meter.today.message}</span>
                                 </div>
                             `}
                         </div>
 
                         <div class="prediction-section">
-                            <div class="section-title">📊 Monthly Prediction</div>
+                            <div class="section-title">Monthly Prediction</div>
                             
                             ${meter.month.success ? `
                                 <div class="stat-box">
@@ -414,9 +462,14 @@
                                 <div class="formula-box">
                                     Formula: ${meter.month.averageDailyRate.toFixed(2)} kWh/day × ${meter.month.daysInCurrentMonth} days
                                 </div>
+
+                                <div class="chart-container">
+                                    <div class="chart-title">Monthly Progress</div>
+                                    <canvas id="chart-month-${meter.meterId}"></canvas>
+                                </div>
                             ` : `
                                 <div class="stat-box">
-                                    <span class="stat-label">⚠️ ${meter.month.message}</span>
+                                    <span class="stat-label">${meter.month.message}</span>
                                 </div>
                             `}
                         </div>
@@ -426,6 +479,156 @@
 
             html += '</div>';
             content.innerHTML = html;
+            
+            // Create charts after DOM is updated
+            setTimeout(() => {
+                data.meters.forEach(meter => {
+                    createTodayChart(meter);
+                    createMonthChart(meter);
+                });
+            }, 100);
+        }
+
+        function createTodayChart(meter) {
+            if (!meter.today.success) return;
+            
+            const ctx = document.getElementById(`chart-today-${meter.meterId}`);
+            if (!ctx) return;
+
+            const hoursRemaining = 24 - meter.today.hoursPassedToday;
+            const projectedRemaining = meter.today.recentHourlyRate * hoursRemaining;
+
+            new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Energy Used', 'Projected'],
+                    datasets: [{
+                        data: [
+                            meter.today.totalEnergyToday,
+                            projectedRemaining
+                        ],
+                        backgroundColor: [
+                            'rgba(59, 130, 246, 0.8)',
+                            'rgba(139, 92, 246, 0.5)'
+                        ],
+                        borderColor: [
+                            'rgba(59, 130, 246, 1)',
+                            'rgba(139, 92, 246, 0.8)'
+                        ],
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                color: '#94a3b8',
+                                padding: 15,
+                                font: {
+                                    size: 12
+                                }
+                            }
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(15, 23, 42, 0.9)',
+                            titleColor: '#f1f5f9',
+                            bodyColor: '#94a3b8',
+                            borderColor: 'rgba(59, 130, 246, 0.5)',
+                            borderWidth: 1,
+                            padding: 12,
+                            callbacks: {
+                                label: function(context) {
+                                    return context.label + ': ' + context.parsed.toFixed(2) + ' kWh';
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function createMonthChart(meter) {
+            if (!meter.month.success) return;
+            
+            const ctx = document.getElementById(`chart-month-${meter.meterId}`);
+            if (!ctx) return;
+
+            const daysRemaining = meter.month.daysInCurrentMonth - meter.month.daysPassedMonth;
+            const projectedRemaining = meter.month.averageDailyRate * daysRemaining;
+
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Consumed', 'Projected'],
+                    datasets: [{
+                        label: 'Energy (kWh)',
+                        data: [
+                            meter.month.totalEnergyMonth,
+                            projectedRemaining
+                        ],
+                        backgroundColor: [
+                            'rgba(59, 130, 246, 0.8)',
+                            'rgba(139, 92, 246, 0.5)'
+                        ],
+                        borderColor: [
+                            'rgba(59, 130, 246, 1)',
+                            'rgba(139, 92, 246, 0.8)'
+                        ],
+                        borderWidth: 2,
+                        borderRadius: 8
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                color: '#94a3b8',
+                                font: {
+                                    size: 11
+                                }
+                            },
+                            grid: {
+                                color: 'rgba(59, 130, 246, 0.1)'
+                            }
+                        },
+                        x: {
+                            ticks: {
+                                color: '#94a3b8',
+                                font: {
+                                    size: 11
+                                }
+                            },
+                            grid: {
+                                display: false
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(15, 23, 42, 0.9)',
+                            titleColor: '#f1f5f9',
+                            bodyColor: '#94a3b8',
+                            borderColor: 'rgba(59, 130, 246, 0.5)',
+                            borderWidth: 1,
+                            padding: 12,
+                            callbacks: {
+                                label: function(context) {
+                                    return context.dataset.label + ': ' + context.parsed.y.toFixed(2) + ' kWh';
+                                }
+                            }
+                        }
+                    }
+                }
+            });
         }
 
         function getMonthName(monthNum) {
