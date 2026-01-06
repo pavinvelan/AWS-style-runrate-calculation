@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Energy Consumption Prediction Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+            animation: fadeIn 0.8s ease-in;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .controls {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            margin-bottom: 30px;
+            animation: slideUp 0.6s ease-out;
+        }
+
+        .controls button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            width: 100%;
+        }
+
+        .controls button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .controls button:active {
+            transform: translateY(0);
+        }
+
+        .meter-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+            gap: 25px;
+            animation: fadeIn 1s ease-in;
+        }
+
+        .meter-card {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .meter-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.25);
+        }
+
+        .meter-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .meter-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            margin-right: 15px;
+        }
+
+        .meter-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #333;
+        }
+
+        .prediction-section {
+            margin-bottom: 25px;
+        }
+
+        .section-title {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #667eea;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 15px;
+        }
+
+        .stat-box {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .stat-label {
+            font-size: 0.95rem;
+            color: #666;
+        }
+
+        .stat-value {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #333;
+        }
+
+        .prediction-box {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            margin-top: 15px;
+        }
+
+        .prediction-label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+            margin-bottom: 8px;
+        }
+
+        .prediction-value {
+            font-size: 2rem;
+            font-weight: 700;
+        }
+
+        .status-badge {
+            display: inline-block;
+            background: #10b981;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-top: 10px;
+        }
+
+        .formula-box {
+            background: #fff9e6;
+            border-left: 4px solid #fbbf24;
+            padding: 15px;
+            border-radius: 6px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            margin-top: 10px;
+            color: #666;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 60px;
+            color: white;
+            font-size: 1.2rem;
+        }
+
+        .error {
+            background: #fee;
+            color: #c33;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .info-box {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            margin-top: 30px;
+        }
+
+        .info-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        .info-list {
+            list-style: none;
+        }
+
+        .info-list li {
+            padding: 8px 0;
+            color: #666;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .info-list li:last-child {
+            border-bottom: none;
+        }
+
+        .info-list li::before {
+            content: "✓ ";
+            color: #10b981;
+            font-weight: bold;
+            margin-right: 8px;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(30px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .meter-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .header h1 {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>⚡ Energy Consumption Prediction</h1>
+            <p>AWS-Style Run-Rate Forecasting</p>
+        </div>
+
+        <div class="controls">
+            <button onclick="loadPredictions()">🔄 Run Prediction Analysis</button>
+        </div>
+
+        <div id="content">
+            <div class="loading">
+                Click the button above to run prediction analysis...
+            </div>
+        </div>
+
+        <div class="info-box">
+            <div class="info-title">📊 How It Works</div>
+            <ul class="info-list">
+                <li>Uses AWS-style run-rate formula: (energy_so_far / time_passed) × total_time</li>
+                <li>Rolling average of last 6 hours reduces spike impact</li>
+                <li>No machine learning - pure mathematical projection</li>
+                <li>Predictions improve as more data becomes available</li>
+                <li>Monthly predictions require minimum 3 days of data</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        async function loadPredictions() {
+            const content = document.getElementById('content');
+            content.innerHTML = '<div class="loading">⏳ Running analysis... Please wait...</div>';
+
+            try {
+                // Call the Node.js script via API
+                const response = await fetch('/api/predict');
+                
+                if (!response.ok) {
+                    throw new Error('Failed to load predictions');
+                }
+
+                const data = await response.json();
+                displayResults(data);
+
+            } catch (error) {
+                content.innerHTML = `
+                    <div class="error">
+                        ⚠️ Error: ${error.message}<br><br>
+                        Make sure the server is running: <code>node server.js</code>
+                    </div>
+                `;
+            }
+        }
+
+        function displayResults(data) {
+            const content = document.getElementById('content');
+            
+            if (!data.meters || data.meters.length === 0) {
+                content.innerHTML = '<div class="error">No meter data available</div>';
+                return;
+            }
+
+            let html = '<div class="meter-grid">';
+
+            data.meters.forEach(meter => {
+                html += `
+                    <div class="meter-card">
+                        <div class="meter-header">
+                            <div class="meter-icon">⚡</div>
+                            <div class="meter-title">${meter.meterId}</div>
+                        </div>
+
+                        <div class="prediction-section">
+                            <div class="section-title">📈 Today's Prediction</div>
+                            
+                            ${meter.today.success ? `
+                                <div class="stat-box">
+                                    <span class="stat-label">Date</span>
+                                    <span class="stat-value">${meter.today.date}</span>
+                                </div>
+                                
+                                <div class="stat-box">
+                                    <span class="stat-label">Hours of Data</span>
+                                    <span class="stat-value">${meter.today.hoursPassedToday} hours</span>
+                                </div>
+                                
+                                <div class="stat-box">
+                                    <span class="stat-label">Energy So Far</span>
+                                    <span class="stat-value">${meter.today.totalEnergyToday.toFixed(2)} kWh</span>
+                                </div>
+
+                                <div class="prediction-box">
+                                    <div class="prediction-label">Predicted Today (Rolling Avg)</div>
+                                    <div class="prediction-value">${meter.today.rollingPrediction.toFixed(2)} kWh</div>
+                                    <div class="status-badge">ESTIMATED</div>
+                                </div>
+
+                                <div class="formula-box">
+                                    Formula: ${meter.today.recentHourlyRate.toFixed(2)} kWh/hr × 24 hrs
+                                </div>
+                            ` : `
+                                <div class="stat-box">
+                                    <span class="stat-label">⚠️ ${meter.today.message}</span>
+                                </div>
+                            `}
+                        </div>
+
+                        <div class="prediction-section">
+                            <div class="section-title">📊 Monthly Prediction</div>
+                            
+                            ${meter.month.success ? `
+                                <div class="stat-box">
+                                    <span class="stat-label">Month</span>
+                                    <span class="stat-value">${getMonthName(meter.month.month)} ${meter.month.year}</span>
+                                </div>
+                                
+                                <div class="stat-box">
+                                    <span class="stat-label">Progress</span>
+                                    <span class="stat-value">${meter.month.daysPassedMonth} / ${meter.month.daysInCurrentMonth} days (${meter.month.percentMonthComplete}%)</span>
+                                </div>
+                                
+                                <div class="stat-box">
+                                    <span class="stat-label">Energy So Far</span>
+                                    <span class="stat-value">${meter.month.totalEnergyMonth.toFixed(2)} kWh</span>
+                                </div>
+
+                                <div class="prediction-box">
+                                    <div class="prediction-label">Predicted Month Total</div>
+                                    <div class="prediction-value">${meter.month.predictedMonthKwh.toFixed(2)} kWh</div>
+                                    <div class="status-badge">ESTIMATED</div>
+                                </div>
+
+                                <div class="formula-box">
+                                    Formula: ${meter.month.averageDailyRate.toFixed(2)} kWh/day × ${meter.month.daysInCurrentMonth} days
+                                </div>
+                            ` : `
+                                <div class="stat-box">
+                                    <span class="stat-label">⚠️ ${meter.month.message}</span>
+                                </div>
+                            `}
+                        </div>
+                    </div>
+                `;
+            });
+
+            html += '</div>';
+            content.innerHTML = html;
+        }
+
+        function getMonthName(monthNum) {
+            const months = ['January', 'February', 'March', 'April', 'May', 'June', 
+                          'July', 'August', 'September', 'October', 'November', 'December'];
+            return months[monthNum - 1];
+        }
+    </script>
+</body>
+</html>
