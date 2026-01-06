@@ -319,3 +319,5 @@ Read the comments in `index.js` for detailed explanations of each step.
 ---
 
 **Built with accuracy and simplicity in mind. No external dependencies. Pure Node.js.**
+#   A W S - s t y l e - r u n r a t e - c a l c u l a t i o n  
+ 
