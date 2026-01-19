@@ -1,4 +1,57 @@
-# AWS-Style Run-Rate Calculation
+# Smart Energy Intelligence (Run-Rate Forecast)
+
+Energy consumption run-rate forecasting (AWS-style) with a real-time dashboard.
+
+## Features
+- Hour → day and day → month run-rate projections (same math AWS uses for billing)
+- Dashboard with Chart.js visuals and fast API endpoints
+- Works with PostgreSQL; configurable via environment variables (see [data_source.js](data_source.js#L5-L36))
+- Optional ultra-fast mode using pre-aggregated data (`npm run aggregate` + `npm run forecast:fast`)
+
+## Requirements
+- Node.js 18+
+- PostgreSQL with a table (default `ksr-energy_meter`) containing: `meter_id` (text), `date` (date), `time` (time), `energy_consumed_kwh` (numeric)
+- Environment variables: `PGHOST`, `PGPORT`, `PGDATABASE`, `PGUSER`, `PGPASSWORD`, `PG_TABLE` (defaults are safe for local docker-compose)
+- Optional: Docker and docker-compose
+
+## Run with Docker
+```powershell
+# If using an external DB, set env vars first
+# set PGHOST=...
+# set PGPORT=...
+# set PGDATABASE=...
+# set PGUSER=...
+# set PGPASSWORD=...
+# set PG_TABLE=ksr-energy_meter
+
+docker-compose up -d
+```
+
+Dashboard: http://localhost:3000/dashboard.html
+
+## Run locally (without Docker)
+```bash
+npm install
+npm run server   # starts server.js on port 3000
+```
+
+Useful scripts:
+- `npm run aggregate` – build aggregated data for ultra-fast forecasts
+- `npm run forecast:fast` – run fast forecast using aggregated data
+- `npm run forecast:optimized` – cached forecast without aggregates
+
+## API
+- `GET /api/predict?year=YYYY&month=M&day=D`
+- `GET /api/forecast?year=YYYY&month=M`
+
+## Troubleshooting
+- `relation "..." does not exist`: set `PG_TABLE` to the correct table name or create the table with the columns above.
+- Auth errors: verify `PGHOST/PGUSER/PGPASSWORD` and that the DB is reachable.
+- Docker healthcheck stuck on starting: give it a few seconds; if it loops, check `docker-compose logs -f app`.
+
+## Data assumptions
+- Timestamps are stored as separate `date` and `time` columns; queries combine them for ordering and aggregation.
+- Rolling averages use the last 6 hours for smoother daily projections; monthly projections need at least 3 days of data.# AWS-Style Run-Rate Calculation
 
 **Smart Energy Intelligence System** - Energy consumption prediction using AWS-style run-rate forecasting
 
