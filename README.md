@@ -1,14 +1,43 @@
-# Energy Consumption Prediction System
+# AWS-Style Run-Rate Calculation
 
-**AWS-Style Run-Rate Forecasting** - Accurate energy predictions without Machine Learning
+**Smart Energy Intelligence System** - Energy consumption prediction using AWS-style run-rate forecasting
+
+[![Node.js](https://img.shields.io/badge/Node.js-v18+-green.svg)](https://nodejs.org/)
+[![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![Performance](https://img.shields.io/badge/Performance-456x_Faster-brightgreen.svg)](QUICK_START.md)
 
 ---
 
-## 🎯 What This Does
+## 🎯 Overview
 
-Predicts energy consumption using the same mathematical approach AWS uses for billing forecasts:
-- **Hour → Day**: Projects today's total consumption from hourly data
-- **Day → Month**: Projects monthly total consumption from daily data
+This system predicts energy consumption using the same mathematical approach AWS uses for billing forecasts. It provides real-time predictions without requiring Machine Learning models.
+
+**Key Features:**
+- 📈 **Hour → Day Prediction**: Projects today's total consumption from hourly data
+- 📊 **Day → Month Prediction**: Projects monthly total consumption from daily data
+- 🎨 **Interactive Dashboard**: Professional dark-theme UI with Chart.js visualizations
+- ⚡ **Real-time Updates**: Instant predictions as new data arrives
+- 🚀 **Zero Dependencies**: Pure Node.js implementation (except Chart.js for UI)
+- ⚡ **Ultra-Fast**: 456x faster forecasting (1,245ms → 2.7ms) - [See Quick Start](QUICK_START.md)
+
+---
+
+## ⚡ Quick Start (Ultra-Fast Mode)
+
+```bash
+# 1. Setup (one-time) - aggregates data for 456x faster forecasting
+npm run aggregate
+
+# 2. Run fast forecast
+npm run forecast:fast
+
+# 3. Start dashboard with auto-optimization
+npm run dashboard
+```
+
+**Result:** Forecasts in ~3ms instead of ~1,245ms! 🚀
+
+See [QUICK_START.md](QUICK_START.md) for details or [PERFORMANCE_OPTIMIZATION.md](PERFORMANCE_OPTIMIZATION.md) for technical details.
 
 ---
 
@@ -55,30 +84,126 @@ predicted_month_kwh = (sum_daily_energy / days_passed) × days_in_month
 
 ---
 
-## 🚀 How to Run
+## 🚀 Quick Start
 
 ### Prerequisites
-- Node.js installed
-- CSV file with energy data
+- Node.js (v14 or higher)
+- PostgreSQL with table containing `meter_id`, `timestamp`, `energy_consumed_kwh`
+- Connection defaults (override with env):
+   - host: 192.168.0.137
+   - port: 5432
+   - db: ksr_meter
+   - user: cubeai
+   - password: 123456
 
-### Steps
-1. Place your CSV file in the same directory as `index.js`
-2. Open terminal in VS Code
-3. Run:
+### Installation
+
+1. **Clone the repository**
    ```bash
-   node index.js
+   git clone https://github.com/pavinvelan/AWS-style-runrate-calculation.git
+   cd AWS-style-runrate-calculation
    ```
+
+2. **Start the server**
+   ```bash
+   node server.js
+   ```
+
+3. **Open the dashboard**
+   ```
+   http://localhost:3000
+   ```
+
+### Running Predictions via Command Line
+
+```bash
+node index.js
+```
+
+---
+
+## 📁 Project Structure
+
+```
+smart-energy-intelligence/
+├── server.js                   # Node.js HTTP server
+├── index.js                    # Core prediction logic
+├── dashboard.html              # Interactive UI with Chart.js
+├── package.json                # Project configuration
+├── 2025-01-*.csv              # Energy data files
+├── README.md                   # This file
+├── TECHNICAL_DOCUMENTATION.md  # Detailed technical docs
+└── SYSTEM_DIAGRAMS.md         # System architecture diagrams
+```
 
 ---
 
 ## 📁 CSV File Format
 
-The script expects a CSV with these columns:
-- `meter_id`: Identifier for the meter
-- `timestamp`: Date and time (YYYY-MM-DD HH:mm:ss)
-- `energy_consumed_kwh`: Energy consumed in that period
+The system expects CSV files named in `YYYY-MM-DD.csv` format with these columns:
+- `meter_id`: Identifier for the meter (e.g., KSR-1, KSR-2)
+- `timestamp`: Date and time in `YYYY-MM-DD HH:mm:ss` format
+- `energy_consumed_kwh`: Energy consumed in kWh
 
-**Your current file** (`2025-01-01.csv`) has **minute-level data** which the script automatically aggregates into hourly totals.
+**Example:**
+```csv
+meter_id,timestamp,energy_consumed_kwh
+KSR-1,2025-01-01 00:00:00,0.64
+KSR-1,2025-01-01 00:01:00,0.63
+KSR-2,2025-01-01 00:00:00,0.78
+```
+
+**Note:** The system automatically aggregates minute-level data into hourly and daily totals.
+
+---
+
+## 🎨 Dashboard Features
+
+- **Dark Theme UI**: Professional, futuristic design with glass-morphism effects
+- **Chart.js Visualizations**: 
+  - Doughnut charts for today's energy breakdown
+  - Bar charts for monthly progress
+- **Real-time Predictions**: Click "Run Prediction Analysis" to get instant results
+- **Multi-meter Support**: Automatically processes all meters in your CSV files
+- **Responsive Design**: Works on desktop, tablet, and mobile
+
+---
+
+## 🔧 API Endpoints
+
+### GET `/api/predict`
+
+Returns prediction data for all meters in JSON format.
+
+**Response:**
+```json
+{
+  "totalRecords": 23040,
+  "meters": [
+    {
+      "meterId": "KSR-1",
+      "hoursProcessed": 192,
+      "today": {
+        "success": true,
+        "date": "2025-01-10",
+        "hoursPassedToday": 24,
+        "totalEnergyToday": 897.57,
+        "rollingPrediction": 895.04,
+        "recentHourlyRate": 37.29
+      },
+      "month": {
+        "success": true,
+        "year": 2025,
+        "month": 1,
+        "daysPassedMonth": 8,
+        "totalEnergyMonth": 7200.24,
+        "predictedMonthKwh": 27900.93,
+        "averageDailyRate": 900.03
+      }
+    }
+  ]
+}
+```
 
 ---
 
@@ -319,5 +444,6 @@ Read the comments in `index.js` for detailed explanations of each step.
 ---
 
 **Built with accuracy and simplicity in mind. No external dependencies. Pure Node.js.**
-#   A W S - s t y l e - r u n r a t e - c a l c u l a t i o n  
+#   A W S - s t y l e - r u n r a t e - c a l c u l a t i o n 
+ 
  

@@ -6,6 +6,10 @@
   "scripts": {
     "start": "node index.js",
     "predict": "node index.js",
+    "forecast": "node forecast.js",
+    "forecast:fast": "node forecast_fast.js",
+    "forecast:optimized": "node forecast_optimized.js",
+    "aggregate": "node aggregate_data.js",
     "server": "node server.js",
     "dashboard": "node server.js"
   },
@@ -18,6 +22,10 @@
   ],
   "author": "",
   "license": "MIT",
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "pg": "^8.11.5"
+  },
   "engines": {
     "node": ">=12.0.0"
   }

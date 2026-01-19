@@ -14,19 +14,99 @@
 
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-            background: #0a0e27;
-            background-image: 
-                radial-gradient(at 20% 30%, rgba(59, 130, 246, 0.15) 0px, transparent 50%),
-                radial-gradient(at 80% 70%, rgba(139, 92, 246, 0.15) 0px, transparent 50%),
-                radial-gradient(at 50% 50%, rgba(6, 182, 212, 0.1) 0px, transparent 50%);
+            background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 25%, #312e81 50%, #1e293b 75%, #0f172a 100%);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
             min-height: 100vh;
             padding: 20px;
-            color: #e2e8f0;
+            color: #ffffff;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(at 20% 30%, rgba(59, 130, 246, 0.08) 0px, transparent 50%),
+                radial-gradient(at 80% 70%, rgba(139, 92, 246, 0.06) 0px, transparent 50%),
+                radial-gradient(at 50% 50%, rgba(6, 182, 212, 0.05) 0px, transparent 50%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
 
         .container {
-            max-width: 1200px;
+            width: 100%;
+            max-width: 1800px;
             margin: 0 auto;
+            padding: 0 32px 32px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 18px 0 12px;
+            color: #e2e8f0;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 800;
+            font-size: 1.2rem;
+            color: #38bdf8;
+            letter-spacing: 0.3px;
+        }
+
+        .subnav {
+            display: flex;
+            gap: 18px;
+            color: #94a3b8;
+            font-size: 0.95rem;
+        }
+
+        .status-bar {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            color: #94a3b8;
+            font-size: 0.95rem;
+        }
+
+        .pill {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 999px;
+            padding: 8px 14px;
+            color: #ffffff;
+            font-size: 0.9rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .pill-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #10b981;
+            box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.25);
         }
 
         .header {
@@ -53,14 +133,73 @@
         }
 
         .controls {
-            background: rgba(15, 23, 42, 0.8);
-            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
             padding: 20px;
-            border-radius: 12px;
-            border: 1px solid rgba(59, 130, 246, 0.2);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
             margin-bottom: 30px;
             animation: slideUp 0.6s ease-out;
+        }
+
+        .control-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 14px;
+            align-items: end;
+        }
+
+        .control-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .control-label {
+            font-size: 0.9rem;
+            color: #94a3b8;
+            letter-spacing: 0.4px;
+        }
+
+        .control-select {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            color: #ffffff;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+            padding: 10px 12px;
+            font-size: 1rem;
+            outline: none;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .control-select option {
+            background: rgba(100, 100, 150, 0.95);
+            color: #ffffff;
+        }
+
+        .control-select:focus {
+            border-color: rgba(255, 255, 255, 0.5);
+            box-shadow: 0 8px 22px rgba(255, 255, 255, 0.2);
+        }
+
+        .selection-pill {
+            margin-top: 16px;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(255, 255, 255, 0.18);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.35);
+            color: #ffffff;
+            padding: 10px 14px;
+            border-radius: 999px;
+            font-size: 0.95rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
         }
 
         .controls button {
@@ -89,25 +228,89 @@
 
         .meter-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
-            gap: 25px;
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+            gap: 18px;
             animation: fadeIn 1s ease-in;
         }
 
         .meter-card {
-            background: rgba(15, 23, 42, 0.8);
-            backdrop-filter: blur(10px);
-            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 16px;
             padding: 25px;
-            border: 1px solid rgba(59, 130, 246, 0.2);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
             transition: all 0.3s ease;
         }
 
         .meter-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 15px 40px rgba(59, 130, 246, 0.3);
-            border-color: rgba(59, 130, 246, 0.4);
+            background: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 12px 40px 0 rgba(31, 38, 135, 0.45);
+            border-color: rgba(255, 255, 255, 0.35);
+        }
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 12px;
+            margin-top: 8px;
+        }
+
+        .summary-card {
+            background: rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            border-radius: 12px;
+            padding: 16px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .summary-label {
+            font-size: 0.9rem;
+            color: #94a3b8;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .summary-value {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: #ffffff;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .metric-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 12px;
+            margin-top: 12px;
+        }
+
+        .metric-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.22);
+            border-radius: 12px;
+            padding: 16px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            min-height: 180px;
+        }
+
+        .metric-title {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: #ffffff;
+            letter-spacing: 0.5px;
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
         }
 
         .meter-header {
@@ -121,24 +324,132 @@
         .meter-icon {
             width: 50px;
             height: 50px;
-            background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
-            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 24px;
             margin-right: 15px;
-            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
         }
 
         .meter-title {
             font-size: 1.5rem;
             font-weight: 700;
-            color: #f1f5f9;
+            color: #ffffff;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
         }
 
         .prediction-section {
             margin-bottom: 25px;
+        }
+
+        .section-block {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            padding: 14px;
+            margin-top: 12px;
+        }
+
+        .hero-box {
+            border-radius: 12px;
+            padding: 14px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            text-align: center;
+            margin-top: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .hero-box.hero-month {
+            border-color: rgba(255, 255, 255, 0.35);
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .hero-box.hero-next {
+            border-color: rgba(255, 255, 255, 0.35);
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .hero-meta {
+            font-size: 0.78rem;
+            color: #94a3b8;
+            margin-bottom: 6px;
+        }
+
+        .hero-value {
+            font-size: 1.6rem;
+            font-weight: 900;
+            color: #f1f5f9;
+            letter-spacing: 0.2px;
+        }
+
+        .hero-pill {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 10px;
+            padding: 5px 10px;
+            border-radius: 999px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 0.8px;
+            color: #10b981;
+            border: 1px solid rgba(16, 185, 129, 0.35);
+            background: rgba(16, 185, 129, 0.12);
+        }
+
+        .hero-pill.pill-month {
+            color: #38bdf8;
+            border-color: rgba(56, 189, 248, 0.35);
+            background: rgba(56, 189, 248, 0.10);
+        }
+
+        .hero-pill.pill-next {
+            color: #a78bfa;
+            border-color: rgba(167, 139, 250, 0.35);
+            background: rgba(167, 139, 250, 0.10);
+        }
+
+        .kv-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 10px;
+            margin-top: 12px;
+        }
+
+        .kv {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            padding: 10px 12px;
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+        }
+
+        .kv-label {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.78rem;
+        }
+
+        .kv-value {
+            color: #ffffff;
+            font-size: 0.78rem;
+            font-weight: 800;
+            text-align: right;
         }
 
         .section-title {
@@ -151,25 +462,28 @@
         }
 
         .stat-box {
-            background: rgba(30, 41, 59, 0.5);
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
             padding: 15px;
-            border-radius: 8px;
+            border-radius: 10px;
             margin-bottom: 12px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border: 1px solid rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
         }
 
         .stat-label {
             font-size: 0.95rem;
-            color: #94a3b8;
+            color: rgba(255, 255, 255, 0.8);
         }
 
         .stat-value {
             font-size: 1.1rem;
             font-weight: 700;
-            color: #f1f5f9;
+            color: #ffffff;
         }
 
         .prediction-box {
@@ -234,12 +548,13 @@
         }
 
         .info-box {
-            background: rgba(15, 23, 42, 0.8);
-            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
             padding: 20px;
-            border-radius: 12px;
-            border: 1px solid rgba(59, 130, 246, 0.2);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
             margin-top: 30px;
         }
 
@@ -329,25 +644,25 @@
         </div>
 
         <div class="controls">
-            <button onclick="loadPredictions()">Run Prediction Analysis</button>
+            <div class="control-grid">
+                <div class="control-group">
+                    <label class="control-label" for="date-select">Date</label>
+                    <input id="date-select" type="date" class="control-select" />
+                </div>
+                <div class="control-group">
+                    <span class="control-label">&nbsp;</span>
+                    <button id="load-button">Load Selected Period</button>
+                </div>
+            </div>
+            <div class="selection-pill" id="selection-pill">Using latest available month from server</div>
         </div>
 
         <div id="content">
             <div class="loading">
-                Click the button above to run prediction analysis...
+                Loading predictions... Please wait...
             </div>
         </div>
 
-        <div class="info-box">
-            <div class="info-title">How It Works</div>
-            <ul class="info-list">
-                <li>Uses AWS-style run-rate formula: (energy_so_far / time_passed) × total_time</li>
-                <li>Rolling average of last 6 hours reduces spike impact</li>
-                <li>No machine learning - pure mathematical projection</li>
-                <li>Predictions improve as more data becomes available</li>
-                <li>Monthly predictions require minimum 3 days of data</li>
-            </ul>
-        </div>
     </div>
 
     <script>
@@ -378,7 +693,13 @@
 
         function displayResults(data) {
             const content = document.getElementById('content');
-            
+            const lastUpdateEl = document.getElementById('last-update');
+
+            if (lastUpdateEl) {
+                const now = new Date();
+                lastUpdateEl.textContent = now.toLocaleString();
+            }
+
             if (!data.meters || data.meters.length === 0) {
                 content.innerHTML = '<div class="error">No meter data available</div>';
                 return;
@@ -386,91 +707,110 @@
 
             let html = '<div class="meter-grid">';
 
-            data.meters.forEach(meter => {
+            // Sort meters by ID to ensure consistent rendering order (KSR-1, KSR-2, etc.)
+            const sortedMeters = [...data.meters].sort((a, b) => {
+                return a.meterId.localeCompare(b.meterId, undefined, { numeric: true, sensitivity: 'base' });
+            });
+
+            sortedMeters.forEach(meter => {
+                const hasNextMonth = !!meter.nextMonth;
+                const monthValue = meter.month && meter.month.success
+                    ? (meter.month.isComplete ? meter.month.totalEnergyMonth : meter.month.predictedMonthKwh)
+                    : 0;
+                const monthLabel = meter.month && meter.month.success
+                    ? (meter.month.isComplete ? 'Actual Consumption' : 'Total Prediction')
+                    : '';
+                const monthPill = meter.month && meter.month.success
+                    ? (meter.month.isComplete ? 'ACTUAL FROM DB' : 'CURRENT MONTH TOTAL')
+                    : '';
+
+                // Card 1: Today
                 html += `
                     <div class="meter-card">
                         <div class="meter-header">
-                            <div class="meter-icon">⚙</div>
+                            <div class="meter-icon"></div>
                             <div class="meter-title">${meter.meterId}</div>
                         </div>
-
-                        <div class="prediction-section">
-                            <div class="section-title">Today's Prediction</div>
-                            
+                        <div class="section-block">
+                            <div class="section-title">TODAY PREDICTION</div>
                             ${meter.today.success ? `
-                                <div class="stat-box">
-                                    <span class="stat-label">Date</span>
-                                    <span class="stat-value">${meter.today.date}</span>
+                                <div class="hero-box">
+                                    <div class="hero-meta">${meter.today.date} - Forecasted Total</div>
+                                    <div class="hero-value">${meter.today.rollingPrediction.toFixed(2)} kWh</div>
+                                    <div class="hero-pill">TODAY FORECAST</div>
                                 </div>
-                                
-                                <div class="stat-box">
-                                    <span class="stat-label">Hours of Data</span>
-                                    <span class="stat-value">${meter.today.hoursPassedToday} hours</span>
+                                <div class="kv-grid">
+                                    <div class="kv"><div class="kv-label">Energy So Far</div><div class="kv-value">${meter.today.totalEnergyToday.toFixed(2)} kWh</div></div>
+                                    <div class="kv"><div class="kv-label">Hours Processed</div><div class="kv-value">${meter.today.hoursPassedToday} / 24</div></div>
+                                    <div class="kv"><div class="kv-label">Avg Hourly Rate</div><div class="kv-value">${meter.today.averageHourlyRate.toFixed(2)} kWh/hr</div></div>
+                                    <div class="kv"><div class="kv-label">Recent Hourly Rate</div><div class="kv-value">${meter.today.recentHourlyRate.toFixed(2)} kWh/hr</div></div>
                                 </div>
-                                
-                                <div class="stat-box">
-                                    <span class="stat-label">Energy So Far</span>
-                                    <span class="stat-value">${meter.today.totalEnergyToday.toFixed(2)} kWh</span>
-                                </div>
-
-                                <div class="prediction-box">
-                                    <div class="prediction-label">Predicted Today (Rolling Avg)</div>
-                                    <div class="prediction-value">${meter.today.rollingPrediction.toFixed(2)} kWh</div>
-                                    <div class="status-badge">ESTIMATED</div>
-                                </div>
-
-                                <div class="formula-box">
-                                    Formula: ${meter.today.recentHourlyRate.toFixed(2)} kWh/hr × 24 hrs
-                                </div>
-
-                                <div class="chart-container">
+                                <div class="chart-container" style="height: 260px;">
                                     <div class="chart-title">Today's Energy Projection</div>
                                     <canvas id="chart-today-${meter.meterId}"></canvas>
                                 </div>
                             ` : `
-                                <div class="stat-box">
-                                    <span class="stat-label">${meter.today.message}</span>
-                                </div>
+                                <div class="kv"><div class="kv-label">Status</div><div class="kv-value">${meter.today.message}</div></div>
                             `}
                         </div>
+                    </div>
+                `;
 
-                        <div class="prediction-section">
-                            <div class="section-title">Monthly Prediction</div>
-                            
+                // Card 2: Current Month
+                html += `
+                    <div class="meter-card">
+                        <div class="meter-header">
+                            <div class="meter-icon"></div>
+                            <div class="meter-title">${meter.meterId}</div>
+                        </div>
+                        <div class="section-block">
+                            <div class="section-title">CURRENT MONTH PREDICTION</div>
                             ${meter.month.success ? `
-                                <div class="stat-box">
-                                    <span class="stat-label">Month</span>
-                                    <span class="stat-value">${getMonthName(meter.month.month)} ${meter.month.year}</span>
+                                <div class="hero-box hero-month">
+                                    <div class="hero-meta">${getMonthName(meter.month.month)} ${meter.month.year} - ${monthLabel}</div>
+                                    <div class="hero-value">${monthValue.toFixed(2)} kWh</div>
+                                    <div class="hero-pill pill-month">${monthPill}</div>
                                 </div>
-                                
-                                <div class="stat-box">
-                                    <span class="stat-label">Progress</span>
-                                    <span class="stat-value">${meter.month.daysPassedMonth} / ${meter.month.daysInCurrentMonth} days (${meter.month.percentMonthComplete}%)</span>
+                                <div class="kv-grid">
+                                    <div class="kv"><div class="kv-label">Total Energy</div><div class="kv-value">${meter.month.totalEnergyMonth.toFixed(2)} kWh</div></div>
+                                    <div class="kv"><div class="kv-label">Days Analyzed</div><div class="kv-value">${meter.month.daysPassedMonth} / ${meter.month.daysInCurrentMonth}</div></div>
+                                    <div class="kv"><div class="kv-label">Avg Daily Rate</div><div class="kv-value">${meter.month.averageDailyRate.toFixed(2)} kWh/day</div></div>
+                                    <div class="kv"><div class="kv-label">Month Complete</div><div class="kv-value">${meter.month.percentMonthComplete}%</div></div>
                                 </div>
-                                
-                                <div class="stat-box">
-                                    <span class="stat-label">Energy So Far</span>
-                                    <span class="stat-value">${meter.month.totalEnergyMonth.toFixed(2)} kWh</span>
-                                </div>
-
-                                <div class="prediction-box">
-                                    <div class="prediction-label">Predicted Month Total</div>
-                                    <div class="prediction-value">${meter.month.predictedMonthKwh.toFixed(2)} kWh</div>
-                                    <div class="status-badge">ESTIMATED</div>
-                                </div>
-
-                                <div class="formula-box">
-                                    Formula: ${meter.month.averageDailyRate.toFixed(2)} kWh/day × ${meter.month.daysInCurrentMonth} days
-                                </div>
-
-                                <div class="chart-container">
+                                <div class="chart-container" style="height: 260px;">
                                     <div class="chart-title">Monthly Progress</div>
                                     <canvas id="chart-month-${meter.meterId}"></canvas>
                                 </div>
                             ` : `
-                                <div class="stat-box">
-                                    <span class="stat-label">${meter.month.message}</span>
+                                <div class="kv"><div class="kv-label">Status</div><div class="kv-value">${meter.month.message}</div></div>
+                            `}
+                        </div>
+                    </div>
+                `;
+
+                // Card 3: Next Month
+                html += `
+                    <div class="meter-card">
+                        <div class="meter-header">
+                            <div class="meter-icon"></div>
+                            <div class="meter-title">${meter.meterId}</div>
+                        </div>
+                        <div class="section-block">
+                            <div class="section-title">NEXT MONTH PREDICTION</div>
+                            ${hasNextMonth ? `
+                                <div class="hero-box hero-next">
+                                    <div class="hero-meta">${getMonthName(meter.nextMonth.month)} ${meter.nextMonth.year} - Forecasted Total</div>
+                                    <div class="hero-value">${(meter.nextMonth.forecast ?? 0).toFixed(2)} kWh</div>
+                                    <div class="hero-pill pill-next">NEXT MONTH FORECAST</div>
                                 </div>
+                                <div class="kv-grid">
+                                    <div class="kv"><div class="kv-label">Days in Forecast</div><div class="kv-value">${meter.nextMonth.daysInMonth ?? '—'}</div></div>
+                                    <div class="kv"><div class="kv-label">Confidence</div><div class="kv-value">${meter.nextMonth.confidence ?? '—'}</div></div>
+                                    <div class="kv"><div class="kv-label">Method</div><div class="kv-value">${meter.nextMonth.method ?? '—'}</div></div>
+                                    <div class="kv"><div class="kv-label">Basis</div><div class="kv-value">${meter.nextMonth.basis ?? '—'}</div></div>
+                                </div>
+                            ` : `
+                                <div class="kv"><div class="kv-label">Status</div><div class="kv-value">Run forecast endpoint to populate next-month data</div></div>
                             `}
                         </div>
                     </div>
@@ -479,10 +819,14 @@
 
             html += '</div>';
             content.innerHTML = html;
-            
-            // Create charts after DOM is updated
+
             setTimeout(() => {
-                data.meters.forEach(meter => {
+                // Use the same sorted order for chart creation
+                const sortedMeters = [...data.meters].sort((a, b) => {
+                    return a.meterId.localeCompare(b.meterId, undefined, { numeric: true, sensitivity: 'base' });
+                });
+                
+                sortedMeters.forEach(meter => {
                     createTodayChart(meter);
                     createMonthChart(meter);
                 });
@@ -556,27 +900,28 @@
             const ctx = document.getElementById(`chart-month-${meter.meterId}`);
             if (!ctx) return;
 
-            const daysRemaining = meter.month.daysInCurrentMonth - meter.month.daysPassedMonth;
-            const projectedRemaining = meter.month.averageDailyRate * daysRemaining;
+            const daysRemaining = Math.max(0, meter.month.daysInCurrentMonth - meter.month.daysPassedMonth);
+            const projectedRemaining = meter.month.isComplete ? 0 : meter.month.averageDailyRate * daysRemaining;
+            const labels = meter.month.isComplete ? ['Consumed'] : ['Consumed', 'Projected'];
+            const datasetValues = meter.month.isComplete
+                ? [meter.month.totalEnergyMonth]
+                : [meter.month.totalEnergyMonth, projectedRemaining];
+            const backgroundColors = meter.month.isComplete
+                ? ['rgba(59, 130, 246, 0.8)']
+                : ['rgba(59, 130, 246, 0.8)', 'rgba(139, 92, 246, 0.5)'];
+            const borderColors = meter.month.isComplete
+                ? ['rgba(59, 130, 246, 1)']
+                : ['rgba(59, 130, 246, 1)', 'rgba(139, 92, 246, 0.8)'];
 
             new Chart(ctx, {
                 type: 'bar',
                 data: {
-                    labels: ['Consumed', 'Projected'],
+                    labels,
                     datasets: [{
                         label: 'Energy (kWh)',
-                        data: [
-                            meter.month.totalEnergyMonth,
-                            projectedRemaining
-                        ],
-                        backgroundColor: [
-                            'rgba(59, 130, 246, 0.8)',
-                            'rgba(139, 92, 246, 0.5)'
-                        ],
-                        borderColor: [
-                            'rgba(59, 130, 246, 1)',
-                            'rgba(139, 92, 246, 0.8)'
-                        ],
+                        data: datasetValues,
+                        backgroundColor: backgroundColors,
+                        borderColor: borderColors,
                         borderWidth: 2,
                         borderRadius: 8
                     }]
@@ -631,11 +976,971 @@
             });
         }
 
+        const MONTH_NAMES = ['January', 'February', 'March', 'April', 'May', 'June',
+            'July', 'August', 'September', 'October', 'November', 'December'];
+        let userSelectedPeriod = false;
+
         function getMonthName(monthNum) {
-            const months = ['January', 'February', 'March', 'April', 'May', 'June', 
-                          'July', 'August', 'September', 'October', 'November', 'December'];
-            return months[monthNum - 1];
+            return MONTH_NAMES[monthNum - 1] || '';
         }
+
+        async function populateSelectors() {
+            const dateInput = document.getElementById('date-select');
+            if (!dateInput) return;
+
+            // Always restrict future dates (dynamic max).
+            applyDateRestrictions(dateInput);
+
+            try {
+                const resp = await fetch('/api/months');
+                if (!resp.ok) throw new Error(`Status ${resp.status}`);
+                const payload = await resp.json();
+                const months = Array.isArray(payload.months) ? payload.months : [];
+
+                if (months.length) {
+                    const latest = months[0];
+                    syncDateInput(latest.year, latest.month, 1, dateInput);
+                    // Clamp if latest month is beyond today.
+                    applyDateRestrictions(dateInput);
+
+                    updateSelectionPill(`Available from DB. Latest: ${getMonthName(latest.month)} ${latest.year}`);
+                    return;
+                }
+            } catch (err) {
+                console.warn('Month list fetch failed, falling back to current date', err);
+            }
+
+            const now = new Date();
+            const currentYear = now.getFullYear();
+            syncDateInput(currentYear, now.getMonth() + 1, now.getDate(), dateInput);
+            applyDateRestrictions(dateInput);
+            updateSelectionPill('Using local current month (DB list unavailable)');
+        }
+
+        function getSelectedPeriod() {
+            const dateInput = document.getElementById('date-select');
+
+            if (dateInput && dateInput.value) {
+                const d = new Date(dateInput.value);
+                if (!Number.isNaN(d.getTime())) {
+                    return { year: d.getFullYear(), month: d.getMonth() + 1, day: d.getDate() };
+                }
+            }
+
+            return { month: undefined, year: undefined, day: undefined };
+        }
+
+        function buildApiUrl(basePath, year, month, day) {
+            const params = new URLSearchParams();
+            if (Number.isFinite(year)) params.append('year', year);
+            if (Number.isFinite(month)) params.append('month', month);
+            if (Number.isFinite(day)) params.append('day', day);
+            const query = params.toString();
+            return query ? `${basePath}?${query}` : basePath;
+        }
+
+        function updateSelectionPill(text) {
+            const pill = document.getElementById('selection-pill');
+            if (pill) pill.textContent = text;
+        }
+
+        function syncSelectorsWithData(forecastData) {
+            if (userSelectedPeriod) return;
+            const source = forecastData && forecastData.generation_info && forecastData.generation_info.source_data
+                ? forecastData.generation_info.source_data
+                : (forecastData ? forecastData.forecast_period : null);
+
+            if (!source || !source.year || !source.month) return;
+
+            const dateInput = document.getElementById('date-select');
+            syncDateInput(source.year, source.month, 1, dateInput);
+
+            updateSelectionPill(`Using ${getMonthName(source.month)} ${source.year} from server data`);
+        }
+
+        function getPeriodLabel(year, month) {
+            if (Number.isFinite(year) && Number.isFinite(month)) {
+                return `${getMonthName(month)} ${year}`;
+            }
+            return 'latest available month';
+        }
+
+        function syncDateInput(year, month, day = 1, dateInputEl) {
+            const dateInput = dateInputEl || document.getElementById('date-select');
+            if (!dateInput || !Number.isFinite(year) || !Number.isFinite(month)) return;
+            const mm = String(month).padStart(2, '0');
+            const dd = String(day).padStart(2, '0');
+            dateInput.value = `${year}-${mm}-${dd}`;
+            // Ensure programmatic updates cannot set future dates.
+            applyDateRestrictions(dateInput);
+        }
+
+        // ----------------------------
+        // Date Restriction (Frontend)
+        // ----------------------------
+        // NOTE: input[type=date] uses the client's local timezone.
+        // We compute today's local YYYY-MM-DD (not toISOString) to avoid UTC offset issues.
+        function formatLocalYmd(d) {
+            const pad = (n) => String(n).padStart(2, '0');
+            return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+        }
+
+        function applyDateRestrictions(dateInputEl) {
+            const dateInput = dateInputEl || document.getElementById('date-select');
+            if (!dateInput) return;
+
+            const todayLocal = formatLocalYmd(new Date());
+            dateInput.max = todayLocal;
+
+            // Clamp any manual/programmatic future value back to today.
+            if (dateInput.value && dateInput.value > todayLocal) {
+                dateInput.value = todayLocal;
+            }
+        }
+
+        function showInitialPlaceholder() {
+            const content = document.getElementById('content');
+            if (!content) return;
+            content.innerHTML = `
+                <div style="text-align: center; padding: 80px 20px; color: #94a3b8;">
+                    <div style="font-size: 4rem; margin-bottom: 20px; opacity: 0.3;">📊</div>
+                    <h2 style="font-size: 1.5rem; color: #e2e8f0; margin-bottom: 12px;">Ready to Analyze</h2>
+                    <p style="font-size: 1rem; opacity: 0.8;">Select a date and click "Load Selected Period" to view predictions</p>
+                </div>
+            `;
+        }
+
+        async function loadForecast() {
+            const content = document.getElementById('content');
+            content.innerHTML = '<div class="loading">Running next month forecast... Please wait...</div>';
+
+            try {
+                const response = await fetch('/api/forecast');
+                
+                if (!response.ok) {
+                    throw new Error('Failed to load forecast');
+                }
+
+                const data = await response.json();
+                displayForecast(data);
+
+            } catch (error) {
+                content.innerHTML = `
+                    <div class="error">
+                        Error: ${error.message}<br><br>
+                        Make sure the server is running: <code>node server.js</code>
+                    </div>
+                `;
+            }
+        }
+
+        function displayForecast(data) {
+            const content = document.getElementById('content');
+            
+            if (!data.meters || data.meters.length === 0) {
+                content.innerHTML = '<div class="error">No forecast data available</div>';
+                return;
+            }
+
+            let html = '<div class="meter-grid">';
+
+            data.meters.forEach(meter => {
+                const currentMonth = meter.currentMonth;
+                const nextMonth = meter.nextMonth;
+                const forecasts = meter.forecasts;
+                const recommended = forecasts.recommended;
+
+                html += `
+                    <div class="meter-card">
+                        <div class="meter-header">
+                            <div class="meter-icon">📈</div>
+                            <div class="meter-title">${meter.meterId}</div>
+                        </div>
+
+                        <div class="prediction-section">
+                            <div class="section-title">Current Month Analysis</div>
+                            
+                            <div class="stat-box">
+                                <span class="stat-label">Month</span>
+                                <span class="stat-value">${getMonthName(currentMonth.month)} ${currentMonth.year}</span>
+                            </div>
+                            
+                            <div class="stat-box">
+                                <span class="stat-label">Days Analyzed</span>
+                                <span class="stat-value">${currentMonth.dayCount} days</span>
+                            </div>
+                            
+                            <div class="stat-box">
+                                <span class="stat-label">Total Energy</span>
+                                <span class="stat-value">${currentMonth.totalEnergy.toFixed(2)} kWh</span>
+                            </div>
+
+                            <div class="stat-box">
+                                <span class="stat-label">Avg Daily</span>
+                                <span class="stat-value">${currentMonth.avgDailyConsumption.toFixed(2)} kWh/day</span>
+                            </div>
+                        </div>
+
+                        <div class="prediction-section">
+                            <div class="section-title">Next Month Forecast - ${getMonthName(nextMonth.month)} ${nextMonth.year}</div>
+                            
+                            <div class="prediction-box">
+                                <div class="prediction-label">⭐ Recommended Forecast (Ensemble)</div>
+                                <div class="prediction-value">${recommended.forecast.toFixed(2)} kWh</div>
+                                <div class="status-badge">PREDICTED</div>
+                            </div>
+
+                            <div style="margin-top: 20px;">
+                                ${forecasts.simpleAverage ? `
+                                <div class="stat-box">
+                                    <span class="stat-label">📊 Simple Average</span>
+                                    <span class="stat-value">${forecasts.simpleAverage.forecast.toFixed(2)} kWh</span>
+                                </div>
+                                ` : ''}
+
+                                ${forecasts.trend ? `
+                                <div class="stat-box">
+                                    <span class="stat-label">📈 Trend Analysis (${forecasts.trend.trendDirection})</span>
+                                    <span class="stat-value">${forecasts.trend.forecast.toFixed(2)} kWh</span>
+                                </div>
+                                ` : ''}
+
+                                ${forecasts.dayOfWeek ? `
+                                <div class="stat-box">
+                                    <span class="stat-label">📅 Day-of-Week Pattern</span>
+                                    <span class="stat-value">${forecasts.dayOfWeek.forecast.toFixed(2)} kWh</span>
+                                </div>
+                                ` : ''}
+
+                                ${forecasts.growthRate ? `
+                                <div class="stat-box">
+                                    <span class="stat-label">📊 Growth Rate (${(forecasts.growthRate.avgGrowthRate * 100).toFixed(1)}% growth)</span>
+                                    <span class="stat-value">${forecasts.growthRate.forecast.toFixed(2)} kWh</span>
+                                </div>
+                                ` : ''}
+                            </div>
+
+                            ${forecasts.trend ? `
+                            <div class="formula-box">
+                                Trend: ${forecasts.trend.dailyChange.toFixed(2)} kWh/day ${forecasts.trend.trendDirection}
+                            </div>
+                            ` : ''}
+
+                            <div class="chart-container">
+                                <div class="chart-title">Forecast Comparison</div>
+                                <canvas id="chart-forecast-${meter.meterId}"></canvas>
+                            </div>
+
+                            ${forecasts.dayOfWeek && forecasts.dayOfWeek.dailyForecasts ? `
+                            <div class="chart-container">
+                                <div class="chart-title">Daily Forecast for ${getMonthName(nextMonth.month)}</div>
+                                <canvas id="chart-daily-${meter.meterId}"></canvas>
+                            </div>
+                            ` : ''}
+                        </div>
+
+                        ${meter.historicalMonths && meter.historicalMonths.length > 1 ? `
+                        <div class="prediction-section">
+                            <div class="section-title">Historical Trend</div>
+                            <div class="chart-container">
+                                <div class="chart-title">Monthly Energy Consumption</div>
+                                <canvas id="chart-history-${meter.meterId}"></canvas>
+                            </div>
+                        </div>
+                        ` : ''}
+                    </div>
+                `;
+            });
+
+            html += '</div>';
+            content.innerHTML = html;
+            
+            // Create charts after DOM is updated
+            setTimeout(() => {
+                data.meters.forEach(meter => {
+                    createForecastComparisonChart(meter);
+                    createDailyForecastChart(meter);
+                    createHistoricalTrendChart(meter);
+                });
+            }, 100);
+        }
+
+        function createForecastComparisonChart(meter) {
+            const ctx = document.getElementById(`chart-forecast-${meter.meterId}`);
+            if (!ctx) return;
+
+            const forecasts = meter.forecasts;
+            const labels = [];
+            const values = [];
+            const colors = [];
+
+            if (forecasts.simpleAverage) {
+                labels.push('Simple Avg');
+                values.push(forecasts.simpleAverage.forecast);
+                colors.push('rgba(59, 130, 246, 0.8)');
+            }
+            if (forecasts.trend) {
+                labels.push('Trend');
+                values.push(forecasts.trend.forecast);
+                colors.push('rgba(139, 92, 246, 0.8)');
+            }
+            if (forecasts.dayOfWeek) {
+                labels.push('Day Pattern');
+                values.push(forecasts.dayOfWeek.forecast);
+                colors.push('rgba(6, 182, 212, 0.8)');
+            }
+            if (forecasts.growthRate) {
+                labels.push('Growth Rate');
+                values.push(forecasts.growthRate.forecast);
+                colors.push('rgba(251, 191, 36, 0.8)');
+            }
+            if (forecasts.ensemble) {
+                labels.push('Ensemble');
+                values.push(forecasts.ensemble.forecast);
+                colors.push('rgba(16, 185, 129, 0.8)');
+            }
+
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Forecast (kWh)',
+                        data: values,
+                        backgroundColor: colors,
+                        borderColor: colors.map(c => c.replace('0.8', '1')),
+                        borderWidth: 2,
+                        borderRadius: 8
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                color: '#94a3b8',
+                                font: { size: 11 }
+                            },
+                            grid: {
+                                color: 'rgba(59, 130, 246, 0.1)'
+                            }
+                        },
+                        x: {
+                            ticks: {
+                                color: '#94a3b8',
+                                font: { size: 11 }
+                            },
+                            grid: {
+                                display: false
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(15, 23, 42, 0.9)',
+                            titleColor: '#f1f5f9',
+                            bodyColor: '#94a3b8',
+                            borderColor: 'rgba(59, 130, 246, 0.5)',
+                            borderWidth: 1,
+                            padding: 12,
+                            callbacks: {
+                                label: function(context) {
+                                    return context.dataset.label + ': ' + context.parsed.y.toFixed(2) + ' kWh';
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function createDailyForecastChart(meter) {
+            const ctx = document.getElementById(`chart-daily-${meter.meterId}`);
+            if (!ctx) return;
+
+            const forecasts = meter.forecasts;
+            if (!forecasts.dayOfWeek || !forecasts.dayOfWeek.dailyForecasts) return;
+
+            const dailyForecasts = forecasts.dayOfWeek.dailyForecasts;
+            const labels = dailyForecasts.map((d, i) => `Day ${i + 1}`);
+            const values = dailyForecasts.map(d => d.predictedEnergy);
+
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Daily Forecast (kWh)',
+                        data: values,
+                        backgroundColor: 'rgba(6, 182, 212, 0.2)',
+                        borderColor: 'rgba(6, 182, 212, 1)',
+                        borderWidth: 2,
+                        fill: true,
+                        tension: 0.4,
+                        pointRadius: 3,
+                        pointBackgroundColor: 'rgba(6, 182, 212, 1)'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                color: '#94a3b8',
+                                font: { size: 11 }
+                            },
+                            grid: {
+                                color: 'rgba(59, 130, 246, 0.1)'
+                            }
+                        },
+                        x: {
+                            ticks: {
+                                color: '#94a3b8',
+                                font: { size: 10 },
+                                maxRotation: 45,
+                                minRotation: 45
+                            },
+                            grid: {
+                                display: false
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(15, 23, 42, 0.9)',
+                            titleColor: '#f1f5f9',
+                            bodyColor: '#94a3b8',
+                            borderColor: 'rgba(59, 130, 246, 0.5)',
+                            borderWidth: 1,
+                            padding: 12,
+                            callbacks: {
+                                label: function(context) {
+                                    return context.dataset.label + ': ' + context.parsed.y.toFixed(2) + ' kWh';
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function createHistoricalTrendChart(meter) {
+            const ctx = document.getElementById(`chart-history-${meter.meterId}`);
+            if (!ctx || !meter.historicalMonths) return;
+
+            const history = meter.historicalMonths;
+            const labels = history.map(m => m.monthKey);
+            const values = history.map(m => m.totalEnergy);
+
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Monthly Energy (kWh)',
+                        data: values,
+                        backgroundColor: 'rgba(139, 92, 246, 0.2)',
+                        borderColor: 'rgba(139, 92, 246, 1)',
+                        borderWidth: 3,
+                        fill: true,
+                        tension: 0.3,
+                        pointRadius: 5,
+                        pointBackgroundColor: 'rgba(139, 92, 246, 1)',
+                        pointBorderColor: '#fff',
+                        pointBorderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                color: '#94a3b8',
+                                font: { size: 11 }
+                            },
+                            grid: {
+                                color: 'rgba(59, 130, 246, 0.1)'
+                            }
+                        },
+                        x: {
+                            ticks: {
+                                color: '#94a3b8',
+                                font: { size: 11 }
+                            },
+                            grid: {
+                                display: false
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(15, 23, 42, 0.9)',
+                            titleColor: '#f1f5f9',
+                            bodyColor: '#94a3b8',
+                            borderColor: 'rgba(59, 130, 246, 0.5)',
+                            borderWidth: 1,
+                            padding: 12,
+                            callbacks: {
+                                label: function(context) {
+                                    return context.dataset.label + ': ' + context.parsed.y.toFixed(2) + ' kWh';
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Combined function to load both predictions and forecast
+        async function loadAll() {
+            const content = document.getElementById('content');
+            const { year, month, day } = getSelectedPeriod();
+            const periodLabel = getPeriodLabel(year, month);
+            content.innerHTML = `<div class="loading">Loading ${periodLabel}${Number.isFinite(day) ? ` (up to day ${day})` : ''}... Please wait...</div>`;
+
+            try {
+                const predictUrl = buildApiUrl('/api/predict', year, month, day);
+                const forecastUrl = buildApiUrl('/api/forecast', year, month);
+
+                const [predictResponse, forecastResponse] = await Promise.all([
+                    fetch(predictUrl),
+                    fetch(forecastUrl)
+                ]);
+
+                if (!predictResponse.ok || !forecastResponse.ok) {
+                    const errorMsg = !predictResponse.ok 
+                        ? `Predict API failed: ${predictResponse.status}` 
+                        : `Forecast API failed: ${forecastResponse.status}`;
+                    throw new Error(errorMsg);
+                }
+
+                const predictData = await predictResponse.json();
+                const forecastData = await forecastResponse.json();
+
+                syncSelectorsWithData(forecastData);
+
+                const appliedSource = forecastData && forecastData.generation_info && forecastData.generation_info.source_data
+                    ? forecastData.generation_info.source_data
+                    : (forecastData ? forecastData.forecast_period : null);
+
+                if (Number.isFinite(day)) {
+                    updateSelectionPill(`Using ${getMonthName(month)} ${year} up to day ${day} (from date picker)`);
+                } else if (appliedSource && appliedSource.month && appliedSource.year && !userSelectedPeriod) {
+                    updateSelectionPill(`Using ${getMonthName(appliedSource.month)} ${appliedSource.year} from server data`);
+                } else {
+                    updateSelectionPill(`Using ${periodLabel}`);
+                }
+
+                displayCombinedResults(predictData, forecastData);
+
+            } catch (error) {
+                console.error('Dashboard error:', error);
+                content.innerHTML = `
+                    <div class="error">
+                        Error: ${error.message}<br><br>
+                        <small>Check browser console for details</small><br>
+                        Make sure the server is running: <code>node server.js</code>
+                    </div>
+                `;
+            }
+        }
+
+        function displayCombinedResults(predictData, forecastData) {
+            const content = document.getElementById('content');
+            let html = '';
+
+            console.log('Predict Data:', JSON.stringify(predictData, null, 2));
+            console.log('Forecast Data:', JSON.stringify(forecastData, null, 2));
+
+            // Summary Cards
+            html += '<div class="meter-grid">';
+            
+            if (predictData.meters && predictData.meters.length > 0) {
+                // Sort meters by ID to ensure consistent rendering order (KSR-1, KSR-2, etc.)
+                const sortedMeters = [...predictData.meters].sort((a, b) => {
+                    return a.meterId.localeCompare(b.meterId, undefined, { numeric: true, sensitivity: 'base' });
+                });
+                
+                sortedMeters.forEach(meter => {
+                    html += generateSimpleCard(meter, forecastData);
+                });
+            } else {
+                html += '<div class="error">No meter data available from predictions API</div>';
+            }
+            
+            html += '</div>';
+
+            content.innerHTML = html;
+        }
+
+        function generateSimpleCard(meter, forecastData) {
+            // Get forecast data for this meter from the per_meter_forecasts object
+            const meterForecast = forecastData.per_meter_forecasts ? forecastData.per_meter_forecasts[meter.meterId] : null;
+            const displayMonthName = forecastData.forecast_period ? forecastData.forecast_period.month_name : 'Next Month';
+            const displayYear = forecastData.generation_info && forecastData.generation_info.source_data
+                ? (forecastData.generation_info.source_data.month === 12
+                    ? forecastData.generation_info.source_data.year + 1
+                    : forecastData.generation_info.source_data.year)
+                : (forecastData.forecast_period ? forecastData.forecast_period.year : '');
+
+            return `
+                <div class="meter-card">
+                    <div class="meter-header">
+                        <div class="meter-icon"></div>
+                        <div class="meter-title">${meter.meterId}</div>
+                    </div>
+
+                    <div class="prediction-section">
+                        <div class="section-title" style="font-size: 1.2rem; color: #22c55e; margin-bottom: 20px;">
+                            Today Prediction
+                        </div>
+
+                        ${meter.today && meter.today.success ? `
+                        <div class="prediction-box" style="background: linear-gradient(135deg, rgba(34, 197, 94, 0.2) 0%, rgba(16, 185, 129, 0.2) 100%); border: 2px solid rgba(34, 197, 94, 0.5);">
+                            <div class="prediction-label" style="font-size: 1rem;">
+                                ${meter.today.date} - Forecasted Total
+                            </div>
+                            <div class="prediction-value" style="font-size: 2.2rem; font-weight: bold;">
+                                ${meter.today.rollingPrediction.toFixed(2)} kWh
+                            </div>
+                            <div class="status-badge" style="font-size: 0.9rem; background: rgba(34, 197, 94, 0.2); border-color: rgba(34, 197, 94, 0.5);">TODAY FORECAST</div>
+                        </div>
+
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 20px;">
+                            <div class="stat-box">
+                                <span class="stat-label">Energy So Far</span>
+                                <span class="stat-value">${meter.today.totalEnergyToday.toFixed(2)} kWh</span>
+                            </div>
+                            <div class="stat-box">
+                                <span class="stat-label">Hours Processed</span>
+                                <span class="stat-value">${meter.today.hoursPassedToday} / 24</span>
+                            </div>
+                            <div class="stat-box">
+                                <span class="stat-label">Avg Hourly Rate</span>
+                                <span class="stat-value">${meter.today.averageHourlyRate.toFixed(2)} kWh/hr</span>
+                            </div>
+                            <div class="stat-box">
+                                <span class="stat-label">Recent Hourly Rate</span>
+                                <span class="stat-value">${meter.today.recentHourlyRate.toFixed(2)} kWh/hr</span>
+                            </div>
+                        </div>
+                        ` : `
+                        <div class="error">No today data available</div>
+                        `}
+                    </div>
+
+                    <div class="prediction-section">
+                        <div class="section-title" style="font-size: 1.2rem; color: #3b82f6; margin-bottom: 20px;">
+                            Current Month Prediction
+                        </div>
+                        
+                        ${meter.month && meter.month.success ? `
+                        <div class="prediction-box" style="background: linear-gradient(135deg, rgba(59, 130, 246, 0.2) 0%, rgba(139, 92, 246, 0.2) 100%); border: 2px solid rgba(59, 130, 246, 0.5);">
+                            <div class="prediction-label" style="font-size: 1rem;">
+                                ${getMonthName(meter.month.month)} ${meter.month.year} - ${meter.month.isComplete ? 'Actual Consumption' : 'Total Prediction'}
+                            </div>
+                            <div class="prediction-value" style="font-size: 2.5rem; font-weight: bold;">
+                                ${(meter.month.isComplete ? meter.month.totalEnergyMonth : meter.month.predictedMonthKwh).toFixed(2)} kWh
+                            </div>
+                            <div class="status-badge" style="font-size: 0.9rem;">${meter.month.isComplete ? 'ACTUAL FROM DB' : 'CURRENT MONTH TOTAL'}</div>
+                        </div>
+
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 20px;">
+                            <div class="stat-box">
+                                <span class="stat-label">Total Energy</span>
+                                <span class="stat-value">${meter.month.totalEnergyMonth.toFixed(2)} kWh</span>
+                            </div>
+                            <div class="stat-box">
+                                <span class="stat-label">Days Analyzed</span>
+                                <span class="stat-value">${meter.month.daysPassedMonth} / ${meter.month.daysInCurrentMonth} days</span>
+                            </div>
+                            <div class="stat-box">
+                                <span class="stat-label">Avg Daily Rate</span>
+                                <span class="stat-value">${meter.month.averageDailyRate.toFixed(2)} kWh/day</span>
+                            </div>
+                            <div class="stat-box">
+                                <span class="stat-label">Month Complete</span>
+                                <span class="stat-value">${meter.month.percentMonthComplete}%</span>
+                            </div>
+                        </div>
+                        ` : `
+                        <div class="error">No current month data available</div>
+                        `}
+                    </div>
+
+                    ${meterForecast ? `
+                    <div class="prediction-section">
+                        <div class="section-title" style="font-size: 1.2rem; color: #8b5cf6; margin-bottom: 20px;">
+                            Next Month Prediction
+                        </div>
+                        
+                        <div class="prediction-box" style="background: linear-gradient(135deg, rgba(139, 92, 246, 0.2) 0%, rgba(6, 182, 212, 0.2) 100%); border: 2px solid rgba(139, 92, 246, 0.5);">
+                            <div class="prediction-label" style="font-size: 1rem;">
+                                ${displayMonthName} ${displayYear} - Forecasted Total
+                            </div>
+                            <div class="prediction-value" style="font-size: 2.5rem; font-weight: bold;">
+                                ${meterForecast.forecast_kwh.toFixed(2)} kWh
+                            </div>
+                            <div class="status-badge" style="font-size: 0.9rem; background: rgba(139, 92, 246, 0.2); border-color: rgba(139, 92, 246, 0.5);">NEXT MONTH FORECAST</div>
+                        </div>
+
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 20px;">
+                            <div class="stat-box">
+                                <span class="stat-label">Avg Daily Forecast</span>
+                                <span class="stat-value">${meterForecast.avg_daily.toFixed(2)} kWh/day</span>
+                            </div>
+                            <div class="stat-box">
+                                <span class="stat-label">Recent Avg Daily</span>
+                                <span class="stat-value">${meterForecast.recent_avg_daily.toFixed(2)} kWh/day</span>
+                            </div>
+                            <div class="stat-box">
+                                <span class="stat-label">Days in Forecast</span>
+                                <span class="stat-value">${forecastData.forecast_period ? forecastData.forecast_period.days_in_month : 'N/A'} days</span>
+                            </div>
+                            <div class="stat-box">
+                                <span class="stat-label">Confidence</span>
+                                <span class="stat-value">${meterForecast.confidence.toUpperCase()}</span>
+                            </div>
+                        </div>
+                    </div>
+                    ` : `
+                    <div class="prediction-section">
+                        <div class="section-title" style="font-size: 1.2rem; color: #8b5cf6; margin-bottom: 20px;">
+                            Next Month Prediction
+                        </div>
+                        <div class="error">
+                            No forecast data available
+                            <br><small>Check browser console (F12) for details</small>
+                        </div>
+                    </div>
+                    `}
+                </div>
+            `;
+        }
+
+        function generatePredictionCard(meter) {
+            return `
+                <div class="meter-card">
+                    <div class="meter-header">
+                        <div class="meter-icon">⚙</div>
+                        <div class="meter-title">${meter.meterId}</div>
+                    </div>
+
+                    <div class="prediction-section">
+                        <div class="section-title">Today's Prediction</div>
+                        
+                        ${meter.todayPrediction && meter.todayPrediction.success ? `
+                        <div class="prediction-box">
+                            <div class="prediction-label">Predicted Total for Today</div>
+                            <div class="prediction-value">${meter.todayPrediction.rollingPrediction.toFixed(2)} kWh</div>
+                            <div class="status-badge">FORECAST</div>
+                        </div>
+
+                        <div class="stat-box">
+                            <span class="stat-label">Energy So Far</span>
+                            <span class="stat-value">${meter.todayPrediction.totalEnergyToday.toFixed(2)} kWh</span>
+                        </div>
+
+                        <div class="stat-box">
+                            <span class="stat-label">Hours Analyzed</span>
+                            <span class="stat-value">${meter.todayPrediction.hoursPassedToday} hours</span>
+                        </div>
+
+                        <div class="stat-box">
+                            <span class="stat-label">Avg Hourly Rate</span>
+                            <span class="stat-value">${meter.todayPrediction.averageHourlyRate.toFixed(2)} kWh/h</span>
+                        </div>
+
+                        <div class="formula-box">
+                            Formula: (${meter.todayPrediction.totalEnergyToday.toFixed(2)} kWh / ${meter.todayPrediction.hoursPassedToday}h) × 24h = ${meter.todayPrediction.rollingPrediction.toFixed(2)} kWh
+                        </div>
+                        ` : `
+                        <div class="error">${meter.todayPrediction ? meter.todayPrediction.message : 'No prediction data available'}</div>
+                        `}
+                    </div>
+
+                    <div class="prediction-section">
+                        <div class="section-title">This Month's Prediction</div>
+                        
+                        ${meter.monthPrediction && meter.monthPrediction.success ? `
+                        <div class="prediction-box">
+                            <div class="prediction-label">Predicted Total for ${getMonthName(meter.monthPrediction.month)} ${meter.monthPrediction.year}</div>
+                            <div class="prediction-value">${meter.monthPrediction.rollingPrediction.toFixed(2)} kWh</div>
+                            <div class="status-badge">FORECAST</div>
+                        </div>
+
+                        <div class="stat-box">
+                            <span class="stat-label">Energy So Far</span>
+                            <span class="stat-value">${meter.monthPrediction.totalEnergyThisMonth.toFixed(2)} kWh</span>
+                        </div>
+
+                        <div class="stat-box">
+                            <span class="stat-label">Days Analyzed</span>
+                            <span class="stat-value">${meter.monthPrediction.daysPassedThisMonth} days</span>
+                        </div>
+
+                        <div class="stat-box">
+                            <span class="stat-label">Avg Daily Rate</span>
+                            <span class="stat-value">${meter.monthPrediction.averageDailyRate.toFixed(2)} kWh/day</span>
+                        </div>
+
+                        <div class="stat-box">
+                            <span class="stat-label">Days in Month</span>
+                            <span class="stat-value">${meter.monthPrediction.daysInMonth} days</span>
+                        </div>
+
+                        <div class="formula-box">
+                            Formula: (${meter.monthPrediction.totalEnergyThisMonth.toFixed(2)} kWh / ${meter.monthPrediction.daysPassedThisMonth} days) × ${meter.monthPrediction.daysInMonth} days = ${meter.monthPrediction.rollingPrediction.toFixed(2)} kWh
+                        </div>
+                        ` : `
+                        <div class="error">${meter.monthPrediction ? meter.monthPrediction.message : 'No prediction data available'}</div>
+                        `}
+                    </div>
+                </div>
+            `;
+        }
+
+        function generateForecastCard(meter) {
+            const currentMonth = meter.currentMonth;
+            const nextMonth = meter.nextMonth;
+            const forecasts = meter.forecasts;
+            const recommended = forecasts.recommended;
+
+            return `
+                <div class="meter-card">
+                    <div class="meter-header">
+                        <div class="meter-icon">📈</div>
+                        <div class="meter-title">${meter.meterId}</div>
+                    </div>
+
+                    <div class="prediction-section">
+                        <div class="section-title">Current Month Analysis</div>
+                        
+                        <div class="stat-box">
+                            <span class="stat-label">Month</span>
+                            <span class="stat-value">${getMonthName(currentMonth.month)} ${currentMonth.year}</span>
+                        </div>
+                        
+                        <div class="stat-box">
+                            <span class="stat-label">Days Analyzed</span>
+                            <span class="stat-value">${currentMonth.dayCount} days</span>
+                        </div>
+                        
+                        <div class="stat-box">
+                            <span class="stat-label">Total Energy</span>
+                            <span class="stat-value">${currentMonth.totalEnergy.toFixed(2)} kWh</span>
+                        </div>
+
+                        <div class="stat-box">
+                            <span class="stat-label">Avg Daily</span>
+                            <span class="stat-value">${currentMonth.avgDailyConsumption.toFixed(2)} kWh/day</span>
+                        </div>
+                    </div>
+
+                    <div class="prediction-section">
+                        <div class="section-title">Next Month Forecast - ${getMonthName(nextMonth.month)} ${nextMonth.year}</div>
+                        
+                        <div class="prediction-box">
+                            <div class="prediction-label">⭐ Recommended Forecast (Ensemble)</div>
+                            <div class="prediction-value">${recommended.forecast.toFixed(2)} kWh</div>
+                            <div class="status-badge">PREDICTED</div>
+                        </div>
+
+                        <div style="margin-top: 20px;">
+                            ${forecasts.simpleAverage ? `
+                            <div class="stat-box">
+                                <span class="stat-label">📊 Simple Average</span>
+                                <span class="stat-value">${forecasts.simpleAverage.forecast.toFixed(2)} kWh</span>
+                            </div>
+                            ` : ''}
+
+                            ${forecasts.trend ? `
+                            <div class="stat-box">
+                                <span class="stat-label">📈 Trend Analysis (${forecasts.trend.trendDirection})</span>
+                                <span class="stat-value">${forecasts.trend.forecast.toFixed(2)} kWh</span>
+                            </div>
+                            ` : ''}
+
+                            ${forecasts.dayOfWeek ? `
+                            <div class="stat-box">
+                                <span class="stat-label">📅 Day-of-Week Pattern</span>
+                                <span class="stat-value">${forecasts.dayOfWeek.forecast.toFixed(2)} kWh</span>
+                            </div>
+                            ` : ''}
+
+                            ${forecasts.growthRate ? `
+                            <div class="stat-box">
+                                <span class="stat-label">📊 Growth Rate (${(forecasts.growthRate.avgGrowthRate * 100).toFixed(1)}% growth)</span>
+                                <span class="stat-value">${forecasts.growthRate.forecast.toFixed(2)} kWh</span>
+                            </div>
+                            ` : ''}
+                        </div>
+
+                        ${forecasts.trend ? `
+                        <div class="formula-box">
+                            Trend: ${forecasts.trend.dailyChange.toFixed(2)} kWh/day ${forecasts.trend.trendDirection}
+                        </div>
+                        ` : ''}
+                    </div>
+
+                    ${meter.historicalMonths && meter.historicalMonths.length > 0 ? `
+                    <div class="chart-container">
+                        <div class="chart-title">Historical Monthly Trend</div>
+                        <canvas id="chart-history-${meter.meterId}"></canvas>
+                    </div>
+                    ` : ''}
+                </div>
+            `;
+        }
+
+        // Initialize UI without auto-loading predictions
+        window.addEventListener('DOMContentLoaded', function() {
+            populateSelectors();
+            showInitialPlaceholder();
+            
+            const loadBtn = document.getElementById('load-button');
+            const dateInput = document.getElementById('date-select');
+
+            // Enforce "max selectable date = today" immediately.
+            applyDateRestrictions(dateInput);
+            
+            if (loadBtn) {
+                loadBtn.addEventListener('click', function() {
+                    userSelectedPeriod = true;
+                    loadAll();
+                });
+            }
+
+            if (dateInput) {
+                dateInput.addEventListener('change', function() {
+                    // Clamp manual input / pasted values.
+                    applyDateRestrictions(dateInput);
+                    const d = new Date(dateInput.value);
+                    if (!Number.isNaN(d.getTime())) {
+                        const y = d.getFullYear();
+                        const m = d.getMonth() + 1;
+                        const day = d.getDate();
+                        userSelectedPeriod = true;
+                        updateSelectionPill(`Using ${getMonthName(m)} ${y} up to day ${day} (from date picker)`);
+                    }
+                });
+            }
+        });
     </script>
 </body>
 </html>
